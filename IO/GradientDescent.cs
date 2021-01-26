@@ -2,20 +2,29 @@
 
 namespace IO
 {
-    class GradientDescentOptimizer : TaskScheduleOptimizer
+    class GradientDescent
     {
         private int MAX_INTER;
-        public GradientDescentOptimizer(int[,] tasks, int iter) : base(tasks)
+        public int[,] tasks;
+        public Schedule schedule;
+        public int rows, cols;
+
+        public GradientDescent(int[,] tasks, int iter)
         {
             MAX_INTER = iter;
+            this.tasks = tasks;
+            rows = tasks.GetLength(0);
+            cols = tasks.GetLength(1);
+            schedule = new Schedule(tasks);
         }
 
-        public override OptimizedResult optimize()
+        public Schedule Optimize()
         {
             Random rnd = new Random();
             int x, y;
 
-            UpdateCosts();
+            schedule.UpdateCostsFrom(0);
+            int[,] costs = schedule.GetCosts();
 
             for (int iter = 0; iter < MAX_INTER; iter++)
             {
@@ -33,18 +42,18 @@ namespace IO
                 costs[x, 0] = tasks[yTaskIdx, 0];
                 costs[y, 0] = tasks[xTaskIdx, 0];
 
-                UpdateCostsFrom(Math.Min(x, y));
+                schedule.UpdateCostsFrom(Math.Min(x, y));
 
                 int newCost = costs[rows - 1, cols - 1];
                 if (newCost > oldSum)
                 {
                     costs[x, 0] = tasks[xTaskIdx, 0];
                     costs[y, 0] = tasks[yTaskIdx, 0];
-                    UpdateCostsFrom(Math.Min(x, y));
+                    schedule.UpdateCostsFrom(Math.Min(x, y));
                 }
             }
 
-            return new OptimizedResult(costs);
+            return schedule;
         }
     }
 }
