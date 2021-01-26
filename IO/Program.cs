@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IO
 {
@@ -8,7 +9,7 @@ namespace IO
         static void Main(string[] args)
         {
             string path = @"C:\Users\wowsi\OneDrive\Pulpit\IO\data.xlsx";
-            int[,] tasks = TasksDAO.getTasks(path);
+            Dictionary<int, int[]> tasks = TasksDAO.GetTasks(path);
 
             //GradientDescent opt = new GradientDescent(tasks, 5000);
             //Schedule result = opt.Optimize();
@@ -18,7 +19,8 @@ namespace IO
 
             NEH neh = new NEH(tasks);
             Schedule sh = neh.Optimize();
-            sh.PrintResult();
+            //sh.PrintResult();
+            Console.WriteLine(sh.GetTotalCost());
 
             Console.Read();
         }

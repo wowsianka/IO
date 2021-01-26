@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IO
 {
     class GradientDescent
     {
         private int MAX_INTER;
-        public int[,] tasks;
+        public Dictionary<int, int[]> tasks;
         public Schedule schedule;
         public int rows, cols;
 
-        public GradientDescent(int[,] tasks, int iter)
+        public GradientDescent(Dictionary<int, int[]> tasks, int iter)
         {
             MAX_INTER = iter;
             this.tasks = tasks;
-            rows = tasks.GetLength(0);
-            cols = tasks.GetLength(1);
+            rows = tasks.Keys.Count;
+            cols = 11;
             schedule = new Schedule(tasks);
         }
 
@@ -36,19 +37,19 @@ namespace IO
                 } while (x == y);
 
                 int oldSum = costs[rows - 1, cols - 1];
-                int xTaskIdx = costs[x, 0] - 1;
-                int yTaskIdx = costs[y, 0] - 1;
+                int xTaskID = costs[x, 0];
+                int yTaskID = costs[y, 0];
 
-                costs[x, 0] = tasks[yTaskIdx, 0];
-                costs[y, 0] = tasks[xTaskIdx, 0];
+                costs[x, 0] = yTaskID;
+                costs[y, 0] = xTaskID;
 
                 schedule.UpdateCostsFrom(Math.Min(x, y));
 
                 int newCost = costs[rows - 1, cols - 1];
                 if (newCost > oldSum)
                 {
-                    costs[x, 0] = tasks[xTaskIdx, 0];
-                    costs[y, 0] = tasks[yTaskIdx, 0];
+                    costs[x, 0] = xTaskID;
+                    costs[y, 0] = yTaskID;
                     schedule.UpdateCostsFrom(Math.Min(x, y));
                 }
             }

@@ -8,29 +8,32 @@ namespace IO
 {
     class Schedule
     {
-        private int[,] tasks;
+        private Dictionary<int, int[]> tasks;
         private int[,] costs;
         private int rows, cols;
 
-        public Schedule(int[,] tasks)
+        public Schedule(Dictionary<int, int[]> tasks)
         {
             this.tasks = tasks;
-            rows = tasks.GetLength(0);
-            cols = tasks.GetLength(1);
+            rows = tasks.Keys.Count;
+            cols = 11;
 
             costs = new int[rows, cols];
-            for (int i = 0; i < rows; i++)
+            int i = 0;
+            foreach(int taskID in tasks.Keys)
             {
-                costs[i, 0] = i + 1;
+                costs[i++, 0] = taskID;
             }
+
+
             UpdateCostsFrom(0);
         }
 
-        public Schedule(int[] order, int[,] tasks)
+        public Schedule(int[] order, Dictionary<int, int[]> tasks)
         {
             this.tasks = tasks;
-            rows = tasks.GetLength(0);
-            cols = tasks.GetLength(1);
+            rows = tasks.Keys.Count;
+            cols = 11;
 
             costs = new int[rows, cols];
             ChangeOrder(order);
@@ -41,25 +44,25 @@ namespace IO
             if (idx == 0)
             {
                 // first cell
-                int taskIdx = costs[0, 0] - 1;
-                costs[0, 1] = tasks[taskIdx, 1];
+                int taskID = costs[0, 0];
+                costs[0, 1] = tasks[taskID][1];
 
                 // rest of cell in first row
                 for (int j = 2; j < cols; j++)
                 {
-                    costs[0, j] = costs[0, j - 1] + tasks[taskIdx, j];
+                    costs[0, j] = costs[0, j - 1] + tasks[taskID][j];
                 }
 
                 idx++;
             }
             for (int i = idx; i < rows; i++)
             {
-                int taskIdx = costs[i, 0] - 1;
-                costs[i, 1] = costs[i - 1, 1] + tasks[taskIdx, 1];
+                int taskID = costs[i, 0];
+                costs[i, 1] = costs[i - 1, 1] + tasks[taskID][1];
 
                 for (int j = 2; j < cols; j++)
                 {
-                    costs[i, j] = tasks[taskIdx, j] +
+                    costs[i, j] = tasks[taskID][j] +
                         Math.Max(costs[i - 1, j], costs[i, j - 1]);
                 }
             }
@@ -67,7 +70,7 @@ namespace IO
 
         public void ChangeOrder(int[] order)
         {
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < order.Length; i++)
             {
                 costs[i, 0] = order[i];
             }

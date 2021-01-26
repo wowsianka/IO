@@ -7,52 +7,57 @@ namespace IO
 {
     class NEH
     {
-        private int[,] tasks;
+        private Dictionary<int, int[]> tasks;
         public int rows, cols;
-        public NEH(int[,] tasks)
+        public NEH(Dictionary<int, int[]> tasks)
         {
             this.tasks = tasks;
-            rows = tasks.GetLength(0);
-            cols = tasks.GetLength(1);
+            rows = tasks.Keys.Count;
+            cols = 11;
         }
 
         public  Schedule Optimize()
         {
-            int[,] insertOrder = new int[tasks.Length, 2];
-
-            //DataTable order = new DataTable();
-            //order.NewRow();
+            int[,] insertOrder = new int[rows, 2];
+            int[] taskIDs = tasks.Keys.ToArray();
 
             for (int i=0; i < rows; i++)
             {
-                insertOrder[i, 0] = tasks[i, 0] - 1; // index of the task
+                insertOrder[i, 0] = taskIDs[i];
                 insertOrder[i, 1] = 0;
-                for(int j=1; j < cols; j++)
+
+                int[] times = tasks[i + 1];
+                for(int j=0; j < cols; j++)
                 {
-                    insertOrder[i, 1] += tasks[i, j];
+                    insertOrder[i, 1] += times[j];
                 }
             }
             insertOrder = insertOrder.OrderByDescending(x => x[1]);
 
-            
-            List<int[]> subTasks = new List<int[]>();
+            Dictionary<int, int[]> subTasks = new Dictionary<int, int[]>();
             List<int> order = new List<int>();
-            int minCost = int.MaxValue;
-            int minIndx = 0;
+            Schedule sh = null;
 
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < insertOrder.GetLength(0); i++)
             {
-                int currentTaskID = insertOrder[i, 0] + 1; // not index but ID, so +1
-                subTasks.Add(tasks.GetRow(currentTaskID));
-                Schedule sh = new Schedule(subTasks.ToMultiArray());
+                int currentTaskID = insertOrder[i, 0];
+                subTasks.Add(currentTaskID, tasks[currentTaskID]);
+                sh = new Schedule(subTasks);
+                int minCost = int.MaxValue;
+                int minIndx = 0;
 
-                for(int j=0; j<i; i++)
+                for (int j=0; j<=i; j++)
                 {
                     order.Insert(j, currentTaskID);
 
                     sh.ChangeOrder(order.ToArray());
-                    sh.UpdateCostsFrom(j);
-                    
+
+                    //if(i == 5)
+                    //{
+                    //    order.ForEach((a) => Console.Write(a + " "));
+                    //    Console.WriteLine();
+                    //}
+
                     int cost = sh.GetTotalCost();
                     if (cost < minCost)
                     {
@@ -63,9 +68,10 @@ namespace IO
                     order.RemoveAt(j);
                 }
                 order.Insert(minIndx, currentTaskID);
+                
             }
 
-            return new Schedule(order.ToArray(), tasks);
+            return sh;
         }
     }
 }
