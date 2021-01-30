@@ -26,7 +26,7 @@ namespace IO
                 insertOrder[i, 0] = taskIDs[i];
                 insertOrder[i, 1] = 0;
 
-                int[] times = tasks[i + 1];
+                int[] times = tasks[taskIDs[i]];
                 for(int j=0; j < cols; j++)
                 {
                     insertOrder[i, 1] += times[j];
