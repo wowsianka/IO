@@ -37,12 +37,13 @@ namespace IO
             Dictionary<int, int[]> subTasks = new Dictionary<int, int[]>();
             List<int> order = new List<int>();
             Schedule sh = null;
-
+            
             for (int i = 0; i < insertOrder.GetLength(0); i++)
             {
                 int currentTaskID = insertOrder[i, 0];
                 subTasks.Add(currentTaskID, tasks[currentTaskID]);
                 sh = new Schedule(subTasks);
+
                 int minCost = int.MaxValue;
                 int minIndx = 0;
 
@@ -51,12 +52,6 @@ namespace IO
                     order.Insert(j, currentTaskID);
 
                     sh.ChangeOrder(order.ToArray());
-
-                    //if(i == 5)
-                    //{
-                    //    order.ForEach((a) => Console.Write(a + " "));
-                    //    Console.WriteLine();
-                    //}
 
                     int cost = sh.GetTotalCost();
                     if (cost < minCost)

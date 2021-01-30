@@ -74,7 +74,7 @@ namespace IO
             {
                 costs[i, 0] = order[i];
             }
-            UpdateCostsFrom(0);
+            UpdateCostsFrom(0); 
         }
 
         public int[,] GetCosts()
