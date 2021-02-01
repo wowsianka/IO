@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace IO
 {
-    class NEH
+    class NEH : IOptimizer
     {
         private Dictionary<int, int[]> tasks;
         public int rows, cols;
@@ -52,6 +52,7 @@ namespace IO
                     order.Insert(j, currentTaskID);
 
                     sh.ChangeOrder(order.ToArray());
+                    sh.UpdateCostsFrom(Math.Max(j - 1, 0));
 
                     int cost = sh.GetTotalCost();
                     if (cost < minCost)

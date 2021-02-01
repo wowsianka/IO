@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IO
 {
-    class FRB2
+    class FRB2 : IOptimizer
     {
         private Dictionary<int, int[]> tasks;
         public int rows, cols;
@@ -63,6 +63,7 @@ namespace IO
                         order.Insert(j, currentTaskID);
 
                         sh.ChangeOrder(order.ToArray());
+                        sh.UpdateCostsFrom(Math.Max(j - 1, 0));
 
                         int cost = sh.GetTotalCost();
                         if (cost < minCost)

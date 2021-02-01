@@ -47,9 +47,12 @@
     <Compile Include="FRB2.cs" />
     <Compile Include="GradientDescent.cs" />
     <Compile Include="NEH.cs" />
+    <Compile Include="IOptimizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="SimulatedAnnealing.cs" />
+    <Compile Include="Tabu.cs" />
     <Compile Include="TasksDAO.cs" />
   </ItemGroup>
   <ItemGroup>

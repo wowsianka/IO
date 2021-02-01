@@ -37,6 +37,7 @@ namespace IO
 
             costs = new int[rows, cols];
             ChangeOrder(order);
+            UpdateCostsFrom(0);
         }
 
         public void UpdateCostsFrom(int idx)
@@ -68,13 +69,13 @@ namespace IO
             }
         }
 
-        public void ChangeOrder(int[] order)
+        public void ChangeOrder(int[] newOrder)
         {
-            for (int i = 0; i < order.Length; i++)
+            for (int i = 0; i < newOrder.Length; i++)
             {
-                costs[i, 0] = order[i];
+                costs[i, 0] = newOrder[i];
             }
-            UpdateCostsFrom(0); 
+            //UpdateCostsFrom(0); 
         }
 
         public int[,] GetCosts()
@@ -102,6 +103,16 @@ namespace IO
                 }
                 Console.WriteLine();
             }
+        }
+
+        public void SwapAndUpdate(int i, int j)
+        {
+            int iTaskID = costs[i, 0];
+            int jTaskID = costs[j, 0];
+            costs[i, 0] = jTaskID;
+            costs[j, 0] = iTaskID;
+
+            UpdateCostsFrom(Math.Min(i, j));
         }
     }
 }

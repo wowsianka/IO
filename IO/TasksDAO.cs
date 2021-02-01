@@ -18,11 +18,6 @@ namespace IO
             int cols = excelRange.Columns.Count;
 
             Object[,] values = (Object[,])excelRange.Cells.Value;
-            //int[,] array = new int[rows, cols];
-
-            //for (int i = 0; i < rows; i++)
-            //    for (int j = 0; j < cols; j++)
-            //        array[i, j] = Convert.ToInt32(values.GetValue(i + 1, j + 1));
 
             Dictionary<int, int[]> dictionary = new Dictionary<int, int[]>();
             for (int i = 0; i < rows; i++)
