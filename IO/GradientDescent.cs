@@ -25,7 +25,6 @@ namespace IO
             int x, y;
 
             schedule.UpdateCostsFrom(0);
-            int[,] costs = schedule.GetCosts();
 
             for (int iter = 0; iter < MAX_INTER; iter++)
             {
@@ -36,11 +35,11 @@ namespace IO
                     y = rnd.Next(rows);
                 } while (x == y);
 
-                int oldCost = costs[rows - 1, cols - 1];
+                int oldCost = schedule.GetTotalCost();
                 
                 schedule.SwapAndUpdate(x, y);
 
-                int newCost = costs[rows - 1, cols - 1];
+                int newCost = schedule.GetTotalCost();
 
                 if (newCost > oldCost)
                 {

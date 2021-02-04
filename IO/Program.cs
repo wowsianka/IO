@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace IO
 {
@@ -34,9 +35,32 @@ namespace IO
             //sh.PrintResult();
             //Console.WriteLine(sh.GetTotalCost());
 
-            Tabu tabu = new Tabu(tasks, 10);
-            Schedule sh = tabu.Optimize();
-            sh.PrintResult(); // 3201
+            //Tabu tabu = new Tabu(tasks, 10);
+            //Schedule sh = tabu.Optimize();
+            //sh.PrintResult(); // 3201
+
+            //int[] taskIDs = tasks.Keys.ToArray();
+            //Random rnd = new Random();
+
+            //int[] order = taskIDs.OrderBy(x => rnd.Next()).ToArray();
+            //int[] order1 = taskIDs.OrderBy(x => rnd.Next()).ToArray();
+
+            //for (int i = 0; i < taskIDs.Length; i++)
+            //{
+            //    Console.Write(order[i].ToString() + " ");
+            //}
+            // Console.WriteLine();
+            //for (int i = 0; i < taskIDs.Length; i++)
+            //{
+            //    Console.Write(order1[i].ToString() + " ");
+            //}
+            //Console.WriteLine();
+
+            GeneticAlgorithm ga = new GeneticAlgorithm(tasks, 6, 0.2, 0.05);
+            Schedule sh = ga.Optimize();
+            sh.PrintResult();
+            Console.WriteLine(sh.GetTotalCost());
+
 
             Console.Read();
         }

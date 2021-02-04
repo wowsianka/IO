@@ -10,7 +10,7 @@ namespace IO
     {
         private Dictionary<int, int[]> tasks;
         private Schedule schedule;
-        private int rows, cols;
+        private int rows;
 
         private int k;
 
@@ -20,7 +20,6 @@ namespace IO
             this.k = k;
 
             rows = tasks.Keys.Count;
-            cols = 11;
 
             schedule = new Schedule(tasks);
         }

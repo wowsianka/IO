@@ -78,6 +78,12 @@ namespace IO
             //UpdateCostsFrom(0); 
         }
 
+        public void ChangeOrderAndUpdate(int[] newOrder)
+        {
+            ChangeOrder(newOrder);
+            UpdateCostsFrom(0);
+        }
+
         public int[,] GetCosts()
         {
             return costs;
