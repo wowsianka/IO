@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace IO
 {
-    class GeneticAlgorithm : IOptimizer
+    class GAT : IOptimizer
     {
         class Genotype
         {
-            public int[] Genes { get; set; }
-
-            public int Cost { get; set; }
-
-            public int Comp { get; set; }
-
-            public double Prob { get; set; }
+            public int[] Genes;
+            public int Cost;
+            public int Comp;
+            public double Prob;
 
             public Genotype(int[] order, int cost)
             {
@@ -29,22 +26,57 @@ namespace IO
 
         private Dictionary<int, int[]> tasks;
         private Schedule schedule;
-        private int rows, cols;
+        private Random rnd = new Random();
+        private int rows;
         private double pk, pm;
+        private readonly bool oXcross;
+        private Boolean crossOX;
         int generations;
 
-        public GeneticAlgorithm(Dictionary<int, int[]> tasks, int generations, double pk, double pm)
+
+        public GAT(Dictionary<int, int[]> tasks, int generations, double pk, double pm, Boolean crossOX)
         {
             this.tasks = tasks;
             this.generations = generations;
             this.pk = pk;
             this.pm = pm;
+            this.crossOX = crossOX;
             rows = tasks.Keys.Count;
-            cols = 11;
             schedule = new Schedule(tasks);
+
         }
 
-        private Genotype Cross(Genotype parent1, Genotype parent2)
+        private Genotype CrossPoint(Genotype parent1, Genotype parent2)
+        {
+            int[] childGenes = new int[rows];
+            for (int i = 25; i < 50; i++)
+                childGenes[i] = parent1.Genes[i];
+
+            int position = 0;
+            for (int i = 0; i < rows; i++)
+            {
+                Boolean found = false;
+                for (int j = 23; j < 50; j++)
+                {
+                    if (parent2.Genes[i] == childGenes[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    childGenes[position] = parent2.Genes[i];
+                    position++;
+                }
+            }
+
+            schedule.ChangeOrderAndUpdate(childGenes);
+            return new Genotype(childGenes, schedule.GetTotalCost());
+        }
+
+        private Genotype CrossOX(Genotype parent1, Genotype parent2)
         {
             int[] childGenes = new int[rows];
             for (int i = 19; i < 30; i++)
@@ -77,11 +109,26 @@ namespace IO
             return new Genotype(childGenes, schedule.GetTotalCost());
         }
 
+        private Genotype SwapRandomGenes(Genotype genotype)
+        {
+            int x, y;
+            do
+            {
+                x = rnd.Next(rows);
+                y = rnd.Next(rows);
+            } while (x == y);
+            int tmp = genotype.Genes[x];
+            genotype.Genes[x] = genotype.Genes[y];
+            genotype.Genes[y] = tmp;
+
+            schedule.ChangeOrderAndUpdate(genotype.Genes);
+            return new Genotype(genotype.Genes, schedule.GetTotalCost());
+        }
+
         public Schedule Optimize()
         {
             int compSum = 0;
             int[] taskIDs = tasks.Keys.ToArray();
-            Random rnd = new Random();
             Genotype[] population = new Genotype[1000];
 
             for(int i=0; i<1000; i++)
@@ -119,19 +166,28 @@ namespace IO
                     if (rnd.NextDouble() > pk)
                     {
                         // make two children from conbination of parent genes
-                        child1 = Cross(parent1, parent2);
-                        child2 = Cross(parent2, parent1);
+                        if (crossOX)
+                        {
+                            child1 = CrossOX(parent1, parent2);
+                            child2 = CrossOX(parent2, parent1);
+                        }
+                        else {
+                            child1 = CrossPoint(parent1, parent2);
+                            child2 = CrossPoint(parent2, parent1);
+                        }
                     }
                     else
                     {
-                        child1 = parent1;
-                        child2 = parent2;
+                        child1 = new Genotype(parent1.Genes, parent1.Cost);
+                        child2 = new Genotype(parent2.Genes, parent2.Cost);
                     }
 
-                    //if (rnd.NextDouble() < pm)
-                    //{
-                    //    // swap random genes
-                    //}
+                    if (rnd.NextDouble() < pm)
+                    {
+                        // swap random genes
+                        child1 = SwapRandomGenes(child1);
+                        child2 = SwapRandomGenes(child2);
+                    }
 
                     children[insert++] = child1;
                     children[insert++] = child2;

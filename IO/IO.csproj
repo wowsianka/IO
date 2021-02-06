@@ -45,8 +45,9 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="FRB2.cs" />
-    <Compile Include="GeneticAlgorithm.cs" />
-    <Compile Include="GradientDescent.cs" />
+    <Compile Include="GAF.cs" />
+    <Compile Include="GAT.cs" />
+    <Compile Include="HillClimbing.cs" />
     <Compile Include="NEH.cs" />
     <Compile Include="IOptimizer.cs" />
     <Compile Include="Program.cs" />

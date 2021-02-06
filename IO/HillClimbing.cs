@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace IO
 {
-    class GradientDescent : IOptimizer
+    class HillClimbing : IOptimizer
     {
         private int MAX_INTER;
         public Dictionary<int, int[]> tasks;
         public Schedule schedule;
         public int rows, cols;
 
-        public GradientDescent(Dictionary<int, int[]> tasks, int iter)
+        public HillClimbing(Dictionary<int, int[]> tasks, int iter)
         {
             MAX_INTER = iter;
             this.tasks = tasks;
