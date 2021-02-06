@@ -26,9 +26,9 @@ namespace IO
             // HILL CLIMBING
 
             //HillClimbing opt = new HillClimbing(tasks, 10000);
-            //Schedule result = opt.Optimize();
-            //result.PrintResult();
-            //Console.WriteLine(result.GetTotalCost());
+            //Schedule sh = opt.Optimize();
+            //sh.PrintOrder();
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             ///////////////////////////////////////////////////////////////////////
@@ -36,17 +36,17 @@ namespace IO
 
             //NEH neh = new NEH(tasks);
             //Schedule sh = neh.Optimize();
-            //sh.PrintResult();
-            //Console.WriteLine(sh.GetTotalCost());
+            //sh.PrintOrder();
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             ///////////////////////////////////////////////////////////////////////
             // FRB2
 
-            FRB2 frb2 = new FRB2(tasks);
-            Schedule sh = frb2.Optimize();
-            sh.PrintResult();
-            Console.WriteLine(sh.GetTotalCost());
+            //FRB2 frb2 = new FRB2(tasks);
+            //Schedule sh = frb2.Optimize();
+            //sh.PrintOrder();
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             ///////////////////////////////////////////////////////////////////////
@@ -54,8 +54,8 @@ namespace IO
 
             //SimulatedAnnealing sa = new SimulatedAnnealing(tasks, 500, 0.99, 5000);
             //Schedule sh = sa.Optimize();
-            //sh.PrintResult();
-            //Console.WriteLine(sh.GetTotalCost());
+            //sh.PrintOrder();
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             ///////////////////////////////////////////////////////////////////////
@@ -63,7 +63,8 @@ namespace IO
 
             //Tabu tabu = new Tabu(tasks, 10);
             //Schedule sh = tabu.Optimize();
-            //sh.PrintResult(); // 3201
+            //sh.PrintOrder(); // 3201
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             ///////////////////////////////////////////////////////////////////////
@@ -71,17 +72,17 @@ namespace IO
 
             //GAT ga = new GAT(tasks, 100, 0.2, 0.05, false);
             //Schedule sh = ga.Optimize();
-            //sh.PrintResult();
-            //Console.WriteLine(sh.GetTotalCost());
+            //sh.PrintOrder();
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             ///////////////////////////////////////////////////////////////////////
             // GENETIC ALGORITHM WITH FIT FUNCTION
 
-            //GAF ga = new GAF(tasks, 100, 0.2, 0.05);
+            //GAF ga = new GAF(tasks, 100, 0.2, 0.05, true);
             //Schedule sh = ga.Optimize();
-            //sh.PrintResult();
-            //Console.WriteLine(sh.GetTotalCost());
+            //sh.PrintOrder();
+            //Console.WriteLine("TOTAL COST:" + sh.GetTotalCost().ToString());
 
 
             Console.Read();

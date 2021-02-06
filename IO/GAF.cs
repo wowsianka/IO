@@ -32,14 +32,16 @@ namespace IO
         private Random rnd = new Random();
         private int rows;
         private double pk, pm;
+        private Boolean crossOX;
         int generations;
 
-        public GAF(Dictionary<int, int[]> tasks, int generations, double pk, double pm)
+        public GAF(Dictionary<int, int[]> tasks, int generations, double pk, double pm, Boolean crossOX)
         {
             this.tasks = tasks;
             this.generations = generations;
             this.pk = pk;
             this.pm = pm;
+            this.crossOX = crossOX;
             rows = tasks.Keys.Count;
             schedule = new Schedule(tasks);
         }
@@ -185,8 +187,16 @@ namespace IO
                     if (rnd.NextDouble() > pk)
                     {
                         // make two children from conbination of parent genes
-                        child1 = CrossPoint(parent1, parent2);
-                        child2 = CrossPoint(parent2, parent1);
+                        if (crossOX)
+                        {
+                            child1 = CrossOX(parent1, parent2);
+                            child2 = CrossOX(parent2, parent1);
+                        }
+                        else
+                        {
+                            child1 = CrossPoint(parent1, parent2);
+                            child2 = CrossPoint(parent2, parent1);
+                        }
                     }
                     else
                     {

@@ -29,7 +29,6 @@ namespace IO
         private Random rnd = new Random();
         private int rows;
         private double pk, pm;
-        private readonly bool oXcross;
         private Boolean crossOX;
         int generations;
 

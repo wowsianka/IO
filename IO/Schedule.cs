@@ -94,9 +94,23 @@ namespace IO
             return costs[costs.GetLength(0) - 1, costs.GetLength(1) - 1];
         }
 
-        public int[,] GetOrder()
+        public int[] GetOrder()
         {
-            throw new NotImplementedException();
+            int[] order = new int[rows];
+            for(int i=0; i < rows; i++)
+            {
+                order[i] = costs[0, i];
+            }
+            return order;
+        }
+
+        public void PrintOrder()
+        {
+            Console.WriteLine("ORDER OF TASKS:");
+            for (int j = 0; j < rows; j++)
+            {
+                Console.WriteLine(costs[j, 0].ToString() + " ");
+            }
         }
 
         public void PrintResult()
